@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">DoctorApp</string>
+    <string name="action_settings">Settings</string>
+    <string-array name="gendarArr">
+        <item>Sex</item>
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+
+    <string-array name="bloodGrp">
+        <item>Your blood group</item>
+        <item>O−</item>
+        <item>O+</item>
+        <item>A−</item>
+        <item>A+</item>
+        <item>B−</item>
+        <item>B+</item>
+        <item>AB-</item>
+        <item>AB+</item>
+    </string-array>
+    <string-array name="qualification">
+        <item>Select your qualification</item>
+        <item>MBBS</item>
+        <item>BDS</item>
+        <item>Dentist</item>
+    </string-array>
+</resources>
