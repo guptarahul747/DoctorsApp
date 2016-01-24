@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -16,12 +17,13 @@ import android.widget.Spinner;
 import com.developer.project.R;
 import com.developer.project.base._Activity;
 import com.developer.project.fragment.DatePickerFragment;
+import com.developer.project.utils.Methods;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class RegisterActivity extends _Activity implements OnClickListener {
+public class RegisterActivity extends _Activity implements OnClickListener, AdapterView.OnItemClickListener {
 
     private EditText mEditTextFirstName = null;
     private EditText mEditTextLastName = null;
@@ -52,6 +54,20 @@ public class RegisterActivity extends _Activity implements OnClickListener {
     private EditText edittext_doctorMobileNo, edittext_hosbitalNo, edittext_hosbitalAddress;
     private Boolean isDoctor;
     private Button signup_btn;
+    private String strUserName;
+    private String strFirstName;
+    private String strLastName;
+    private String strPassword, strConfirmPassword;
+    private String strDate = null;
+    private String strEmail;
+    private Spinner spinnerSex;
+    private String strGender;
+    private String strQualification;
+    private String strDoctorMobileNo;
+    private String strDoctorAlternateNo, strDoctorAddress;
+    private String strBloodGrp;
+    private String strPatientAlternateMobileNo;
+    private String strPatientMobileNo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +93,8 @@ public class RegisterActivity extends _Activity implements OnClickListener {
         radioPatient = (AppCompatRadioButton) findViewById(R.id.radioPatient);
         radioDoctor = (AppCompatRadioButton) findViewById(R.id.radioDoctor);
         spinnerBloodGrp = (Spinner) findViewById(R.id.spinnerBloodGrp);
+        spinnerSex = (Spinner) findViewById(R.id.spinnerSex);
+
         edittext_MobileNo = (EditText) findViewById(R.id.edittext_MobileNo);
         edittext_alternateNo = (EditText) findViewById(R.id.edittext_alternateNo);
 
@@ -88,6 +106,7 @@ public class RegisterActivity extends _Activity implements OnClickListener {
 
         btnAge.setOnClickListener(this);
 
+        spinnerSex.setOnItemClickListener(this);
         radioGrp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -118,12 +137,126 @@ public class RegisterActivity extends _Activity implements OnClickListener {
 
     private void signUpDoctor() {
 
+        if (validateFields() && validateDoctor()) {
+
+
+        }
     }
 
     private void signUpPatient() {
+
+        if (validateFields() && validatePatient()) {
+
+        }
     }
 
+    private boolean validatePatient() {
 
+        if (spinnerBloodGrp.getSelectedItemPosition() == 0){
+
+            smallToast("Select Blood Group");
+            return false;
+        } else if (Methods.validateEmptyString(edittext_MobileNo,"Enter Mobile no")){
+
+            edittext_MobileNo.requestFocus();
+            return false;
+        }else if (Methods.validateEmptyString(edittext_alternateNo,"Enter Alternate Mobile no")){
+
+            edittext_alternateNo.requestFocus();
+            return false;
+        } else {
+
+            strBloodGrp = (String)spinnerBloodGrp.getSelectedItem();
+            strPatientMobileNo = edittext_MobileNo.getText().toString().trim();
+            strPatientAlternateMobileNo = edittext_alternateNo.getText().toString().trim();
+            return  true;
+        }
+    }
+
+    private boolean validateDoctor() {
+
+        if (spinnerQualification.getSelectedItemPosition() == 0) {
+
+            smallToast("Select you are qualification");
+            return false;
+        } else if (Methods.validateEmptyString(edittext_doctorMobileNo, "Enter Mobile No")) {
+
+            edittext_doctorMobileNo.requestFocus();
+            return false;
+        } else if (Methods.validateEmptyString(edittext_hosbitalNo, "Enter Hospital Contact No")) {
+
+            edittext_hosbitalNo.requestFocus();
+            return false;
+        } else if (Methods.validateEmptyString(edittext_hosbitalAddress, "Enter Hospital Address")) {
+
+            edittext_hosbitalAddress.requestFocus();
+            return false;
+        } else {
+
+            strQualification = (String) spinnerQualification.getSelectedItem();
+            strDoctorMobileNo = edittext_doctorMobileNo.getText().toString().trim();
+            strDoctorAlternateNo = edittext_hosbitalNo.getText().toString().trim();
+            strDoctorAddress = edittext_hosbitalAddress.getText().toString().trim();
+
+            return true;
+        }
+
+    }
+
+    private boolean validateFields() {
+
+        if (!Methods.validateEmptyString(mEditTextUserName, "Enter UserName")) {
+
+            mEditTextUserName.requestFocus();
+            return false;
+        } else if (!Methods.validateEmptyString(mEditTextFirstName, "Enter First Name")) {
+
+            mEditTextFirstName.requestFocus();
+            return false;
+
+        } else if (!Methods.validateEmptyString(mEditTextLastName, "Enter Last Name")) {
+
+            mEditTextLastName.requestFocus();
+            return false;
+
+        } else if (!Methods.validateEmptyString(mEditTextPassword, "Enter Password")) {
+
+            mEditTextPassword.requestFocus();
+            return false;
+
+        } else if (!(mEditTextPassword.getText().toString().trim()
+                .equalsIgnoreCase(mEditTextConfirmPassword.getText().toString().trim()))) {
+            mEditTextConfirmPassword.setError("Password doesn't match");
+            mEditTextConfirmPassword.requestFocus();
+            return false;
+
+        } else if (!Methods.isValidEmail(mEditTextEmail, "Invalid Email")) {
+            return false;
+
+        } else if (strDate == null) {
+
+            smallToast("Select Age");
+            return false;
+        } else if (spinnerSex.getSelectedItemPosition() == 0) {
+
+            smallToast("Select Gender");
+            return false;
+        } else if (radioGrp.getCheckedRadioButtonId() == -1) {
+
+            smallToast("Select you are patient or doctor");
+            return false;
+        } else {
+
+            strUserName = mEditTextUserName.getText().toString().trim();
+            strFirstName = mEditTextFirstName.getText().toString().trim();
+            strLastName = mEditTextLastName.getText().toString().trim();
+            strPassword = mEditTextPassword.getText().toString().trim();
+            strConfirmPassword = mEditTextConfirmPassword.getText().toString().trim();
+            strEmail = mEditTextEmail.getText().toString().trim();
+            strGender = (String) spinnerSex.getSelectedItem();
+            return true;
+        }
+    }
 
     private void callWebservice(int iType) {
         iCallWebservice = iType;
@@ -184,7 +317,9 @@ public class RegisterActivity extends _Activity implements OnClickListener {
             Calendar calendar = Calendar.getInstance();
             calendar.set(year, monthOfYear, dayOfMonth);
 
-            btnAge.setText("" + getDiffYears(calendar.getTime(), date));
+            strDate = "" + getDiffYears(calendar.getTime(), date);
+            btnAge.setText(strDate);
+
         }
     };
 
@@ -206,5 +341,22 @@ public class RegisterActivity extends _Activity implements OnClickListener {
         Calendar cal = Calendar.getInstance(Locale.US);
         cal.setTime(date);
         return cal;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        Spinner spinner = (Spinner) parent;
+
+        switch (spinner.getId()) {
+
+            case R.id.spinnerSex:
+
+                break;
+            case R.id.spinnerBloodGrp:
+                break;
+            case R.id.spinnerQualification:
+                break;
+        }
     }
 }

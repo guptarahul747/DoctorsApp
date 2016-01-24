@@ -140,7 +140,8 @@
                     android:id="@+id/radioPatient"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Patient" />
+                    android:text="Patient"
+                   />
 
                 <android.support.v7.widget.AppCompatRadioButton
                     android:id="@+id/radioDoctor"
