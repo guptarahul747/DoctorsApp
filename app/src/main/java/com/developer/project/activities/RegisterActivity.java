@@ -23,7 +23,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class RegisterActivity extends _Activity implements OnClickListener, AdapterView.OnItemClickListener {
+public class RegisterActivity extends _Activity implements OnClickListener, AdapterView.OnItemSelectedListener {
 
     private EditText mEditTextFirstName = null;
     private EditText mEditTextLastName = null;
@@ -106,7 +106,7 @@ public class RegisterActivity extends _Activity implements OnClickListener, Adap
 
         btnAge.setOnClickListener(this);
 
-        spinnerSex.setOnItemClickListener(this);
+        spinnerSex.setOnItemSelectedListener(this);
         radioGrp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -343,8 +343,23 @@ public class RegisterActivity extends _Activity implements OnClickListener, Adap
         return cal;
     }
 
+
+    /**
+     * <p>Callback method to be invoked when an item in this view has been
+     * selected. This callback is invoked only when the newly selected
+     * position is different from the previously selected position or if
+     * there was no selected item.</p>
+     * <p/>
+     * Impelmenters can call getItemAtPosition(position) if they need to access the
+     * data associated with the selected item.
+     *
+     * @param parent   The AdapterView where the selection happened
+     * @param view     The view within the AdapterView that was clicked
+     * @param position The position of the view in the adapter
+     * @param id       The row id of the item that is selected
+     */
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
         Spinner spinner = (Spinner) parent;
 
@@ -358,5 +373,17 @@ public class RegisterActivity extends _Activity implements OnClickListener, Adap
             case R.id.spinnerQualification:
                 break;
         }
+    }
+
+    /**
+     * Callback method to be invoked when the selection disappears from this
+     * view. The selection can disappear for instance when touch is activated
+     * or when the adapter becomes empty.
+     *
+     * @param parent The AdapterView that now contains no selected item.
+     */
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }
